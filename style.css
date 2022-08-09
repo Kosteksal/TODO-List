@@ -40,6 +40,7 @@ body {
 h2 {
     margin-bottom: 0;
     margin-top: 0;
+    height: 60px;
 }
 
 .note-container {
@@ -61,4 +62,24 @@ h2 {
 .text {
     width: 500px;
     height: 500px;
+}
+
+.status-container {
+    display: flex;
+    flex-direction: row;
+    border: 2px solid blue;
+    gap: 7px;
+    cursor: pointer;
+}
+
+.status0 {
+    background-color: grey;
+}
+
+.status1 {
+    background-color: lightskyblue;
+}
+
+.status2 {
+    background-color: lightgreen;
 }

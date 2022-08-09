@@ -20,6 +20,8 @@ let dataArr = [
 
 let position = 0;
 let isNew = 0;
+let statusArr = ['waiting', 'in process', 'ready'];
+let statusInfo;
 
 
 
@@ -93,23 +95,44 @@ function descBuilder () {
     const saveBtn = document.createElement('button');
     saveBtn.classList.add('save-btn');
     saveBtn.innerText = 'Save';
+    const statusContainer = document.createElement('div');
+    statusContainer.classList.add('status-container');
     titleArea.value = dataArr[position]['name'];
     textArea.value = dataArr[position]['info'];
     descArea.append(titleArea);
     descArea.append(textArea);
+    descArea.append(statusContainer);
+    statusArr.forEach((i) => {
+        const statusItem = document.createElement('div');
+        statusItem.classList.add(`status${statusArr.indexOf(i)}`);
+        statusItem.classList.add('status-item');
+        statusItem.innerText = i;
+        statusContainer.append(statusItem);
+
+    })
+
+    // const status = document.querySelector(`.status${dataArr[position]['status'] - 1}`);
+    // status.style.border = '2px solid black';
+
     descArea.append(saveBtn);
+    statusInfo = dataArr[position]['status'];
 
     noteSaver();
+
+    statusChanger();
 }
 
 
 function noteDescript () {
    const notes = document.querySelectorAll('.note-title');
+   notes[0].style.border = '3px solid red';
     notes.forEach(i => i.addEventListener('click', (event) => {
         position = event.target.id;
         document.querySelector('.note-container').innerHTML = '';
         descBuilder();
         console.log(event.target.id);
+        notes.forEach(e => e.style.border = 'none')
+        event.target.style.border = '3px solid red';
         isNew = 0;
     }))
 
@@ -121,6 +144,7 @@ function noteSaver () {
     const text = document.querySelector('.text');
     if (isNew === 0) {
     saveBtn.addEventListener('click', () => {
+        dataArr[position]['status'] = statusInfo;
         dataArr[position]['name'] = `${nameText.value}`;
         document.querySelector('.list-container').innerHTML = '';
         notesBuilder();
@@ -129,15 +153,17 @@ function noteSaver () {
         descBuilder();
     })} 
     if (isNew === 1) {
+        statusInfo = 0;
         saveBtn.addEventListener('click', () => {
         dataArr.push({
             name: `${nameText.value}`,
             info: `${text.value}`,
-            status: '1',
+            status: statusInfo,
         },);
         isNew = 0;
         document.querySelector('.list-container').innerHTML = '';
         document.querySelector('.note-container').innerHTML = '';
+        //position = dataArr.length;
         notesBuilder();
         descBuilder();
     })}
@@ -148,9 +174,12 @@ function newAdder () {
     btn.addEventListener('click', () => {
         document.querySelector('.note-container').innerHTML = '';
         isNew = 1;
-        
+        const notes = document.querySelectorAll('.note-title');
+        notes.forEach(e => e.style.border = 'none');
         const descArea = document.querySelector('.note-container');
         const textArea = document.createElement('textarea');
+        const statusContainer = document.createElement('div');
+        statusContainer.classList.add('status-container');
         textArea.classList.add('text');
         const titleArea = document.createElement('textarea');
         titleArea.classList.add('title-text');
@@ -161,8 +190,33 @@ function newAdder () {
         textArea.value = '';
         descArea.append(titleArea);
         descArea.append(textArea);
+        descArea.append(statusContainer);
+        
+        statusArr.forEach((i) => {
+            const statusItem = document.createElement('div');
+            statusItem.classList.add(`status${statusArr.indexOf(i)}`);
+            statusItem.classList.add('status-item');
+            statusItem.innerText = i;
+            statusContainer.append(statusItem);
+    
+        })
         descArea.append(saveBtn);
         noteSaver();
+        statusChanger();
+    })
+}
+
+function statusChanger () {
+    const statuses = document.querySelectorAll('.status-item');
+    statuses.forEach((i) => {
+        i.addEventListener('click', (event) => {
+            statusInfo = (Number(event.target.className[6])) + 1;
+            console.log(statusInfo)
+            statuses.forEach( i => i.style.border = 'none');
+            event.target.style.border = '2px solid black';
+            // descArea.append(saveBtn);
+            //noteSaver();
+        })
     })
 }
 
