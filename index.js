@@ -22,6 +22,7 @@ let position = 0;
 let isNew = 0;
 let statusArr = ['waiting', 'in process', 'ready'];
 let statusInfo;
+let startNote = 0;
 
 
 
@@ -125,7 +126,7 @@ function descBuilder () {
 
 function noteDescript () {
    const notes = document.querySelectorAll('.note-title');
-   notes[0].style.border = '3px solid red';
+   notes[startNote].style.border = '3px solid red';
     notes.forEach(i => i.addEventListener('click', (event) => {
         position = event.target.id;
         document.querySelector('.note-container').innerHTML = '';
@@ -153,7 +154,7 @@ function noteSaver () {
         descBuilder();
     })} 
     if (isNew === 1) {
-        statusInfo = 0;
+        statusInfo = 1;
         saveBtn.addEventListener('click', () => {
         dataArr.push({
             name: `${nameText.value}`,
@@ -163,7 +164,8 @@ function noteSaver () {
         isNew = 0;
         document.querySelector('.list-container').innerHTML = '';
         document.querySelector('.note-container').innerHTML = '';
-        //position = dataArr.length;
+        startNote = dataArr.length - 1;
+        position = dataArr.length - 1;
         notesBuilder();
         descBuilder();
     })}
