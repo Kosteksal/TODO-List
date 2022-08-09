@@ -16,7 +16,9 @@ let dataArr = [
         info: 'возможна очередь',
         status: '3',
     },
-]
+];
+
+let position = 0;
 
 
 
@@ -63,6 +65,8 @@ function notesBuilder () {
         if (i['status'] == '2') {note.style.backgroundColor = 'lightblue'};
         if (i['status'] == '3') {note.style.backgroundColor = 'lightgreen'};
         const noteTitle = document.createElement('h2');
+        noteTitle.classList.add('note-title');
+        noteTitle.id = dataArr.indexOf(i);
         noteTitle.innerText = i['name'];
         listContainer.append(note);
         note.append(noteTitle);
@@ -80,20 +84,41 @@ function descBuilder () {
     const titleArea = document.createElement('textarea');
     titleArea.classList.add('title-text');
     const saveBtn = document.createElement('button');
-    saveBtn.classList.add('save-Btn');
+    saveBtn.classList.add('save-btn');
     saveBtn.innerText = 'Save';
-    titleArea.value = dataArr[0]['name'];
-    textArea.value = dataArr[0]['info'];
+    titleArea.value = dataArr[position]['name'];
+    textArea.value = dataArr[position]['info'];
     descArea.append(titleArea);
     descArea.append(textArea);
     descArea.append(saveBtn);
+
+    noteSaver();
 }
 
 
 function noteDescript () {
-   const notes = document.querySelectorAll('.note');
-//    notes.forEach(i => i.addEventListener('click', descBuilder()))
+   const notes = document.querySelectorAll('.note-title');
+    notes.forEach(i => i.addEventListener('click', (event) => {
+        position = event.target.id;
+        document.querySelector('.note-container').innerHTML = '';
+        descBuilder();
+        console.log(event.target.id);
+    }))
 
+}
+
+function noteSaver () {
+    const saveBtn = document.querySelector('.save-btn');
+    const nameText = document.querySelector('.title-text');
+    const text = document.querySelector('.text');
+    saveBtn.addEventListener('click', () => {
+        dataArr[position]['name'] = `${nameText.value}`;
+        document.querySelector('.list-container').innerHTML = '';
+        notesBuilder();
+        dataArr[position]['info'] = `${text.value}`;
+        document.querySelector('.note-container').innerHTML = '';
+        descBuilder();
+    })
 }
 
 document.addEventListener('DOMContentLoaded', builder);
