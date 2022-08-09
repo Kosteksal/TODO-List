@@ -39,6 +39,10 @@ function builder () {
     const addBtn = document.createElement('button');
     addBtn.classList.add('add-btn');
     addBtn.innerText = 'New';
+    const delBtn = document.createElement('button');
+    delBtn.classList.add('del-btn');
+    delBtn.innerText = 'DELETE';
+
 
     const wrapper = document.createElement('div');
     wrapper.classList.add('wrapper');
@@ -56,13 +60,17 @@ function builder () {
     wrapper.append(noteContainer);
     controls.append(mainTitle);
     controls.append(btnContainer);
+    btnContainer.append(delBtn);
     btnContainer.append(addBtn);
+
 
     notesBuilder();
 
     descBuilder();
 
     newAdder();
+
+    remover();
 }
 
 function notesBuilder () {
@@ -148,6 +156,7 @@ function noteSaver () {
         dataArr[position]['status'] = statusInfo;
         dataArr[position]['name'] = `${nameText.value}`;
         document.querySelector('.list-container').innerHTML = '';
+        startNote = position;
         notesBuilder();
         dataArr[position]['info'] = `${text.value}`;
         document.querySelector('.note-container').innerHTML = '';
@@ -220,6 +229,31 @@ function statusChanger () {
             //noteSaver();
         })
     })
+}
+
+function remover () {
+    const btn = document.querySelector('.del-btn');
+    btn.addEventListener('click', (even) => {
+        if (dataArr.length <= 1) {
+            newAdder();
+            dataArr[0] = {
+                name: '',
+                info: '',
+                status: statusInfo,
+            };
+            document.querySelector('.list-container').innerHTML = '';
+            document.querySelector('.note-container').innerHTML = '';
+            notesBuilder();
+            descBuilder();
+        } else {
+            dataArr.splice(position, 1);
+            position = 0;
+            startNote = position;
+            document.querySelector('.list-container').innerHTML = '';
+            document.querySelector('.note-container').innerHTML = '';
+            notesBuilder();
+            descBuilder();
+}})
 }
 
 document.addEventListener('DOMContentLoaded', builder);
