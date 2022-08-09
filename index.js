@@ -11,6 +11,11 @@ let dataArr = [
         info: 'очень сложная',
         status: '1',
     },
+    {
+        name: 'забрать посылку',
+        info: 'возможна очередь',
+        status: '3',
+    },
 ]
 
 
@@ -44,6 +49,8 @@ function builder () {
     controls.append(btnContainer);
 
     notesBuilder();
+
+    descBuilder();
 }
 
 function notesBuilder () {
@@ -61,7 +68,32 @@ function notesBuilder () {
         note.append(noteTitle);
         
     })
+
+
+    noteDescript ();
 }
 
+function descBuilder () {
+    const descArea = document.querySelector('.note-container');
+    const textArea = document.createElement('textarea');
+    textArea.classList.add('text');
+    const titleArea = document.createElement('textarea');
+    titleArea.classList.add('title-text');
+    const saveBtn = document.createElement('button');
+    saveBtn.classList.add('save-Btn');
+    saveBtn.innerText = 'Save';
+    titleArea.value = dataArr[0]['name'];
+    textArea.value = dataArr[0]['info'];
+    descArea.append(titleArea);
+    descArea.append(textArea);
+    descArea.append(saveBtn);
+}
+
+
+function noteDescript () {
+   const notes = document.querySelectorAll('.note');
+//    notes.forEach(i => i.addEventListener('click', descBuilder()))
+
+}
 
 document.addEventListener('DOMContentLoaded', builder);
