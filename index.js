@@ -4,12 +4,12 @@ let dataArr = [
     {
         name: 'купить хлеб',
         info: 'в определенном магазине',
-        ststus: '2',
+        status: '2',
     },
     {
         name: 'решить задачу',
         info: 'очень сложная',
-        ststus: '1',
+        status: '1',
     },
 ]
 
@@ -42,6 +42,25 @@ function builder () {
     wrapper.append(noteContainer);
     controls.append(mainTitle);
     controls.append(btnContainer);
+
+    notesBuilder();
+}
+
+function notesBuilder () {
+    const listContainer = document.querySelector('.list-container');
+    
+    dataArr.forEach( function (i) {
+        const note = document.createElement('div');
+        note.classList.add('note');
+        if (i['status'] == '1') {note.style.backgroundColor = 'grey'};
+        if (i['status'] == '2') {note.style.backgroundColor = 'lightblue'};
+        if (i['status'] == '3') {note.style.backgroundColor = 'lightgreen'};
+        const noteTitle = document.createElement('h2');
+        noteTitle.innerText = i['name'];
+        listContainer.append(note);
+        note.append(noteTitle);
+        
+    })
 }
 
 
