@@ -19,6 +19,7 @@ let dataArr = [
 ];
 
 let position = 0;
+let isNew = 0;
 
 
 
@@ -32,6 +33,9 @@ function builder () {
     btnContainer.classList.add('btn-container');
     const mainTitle = document.createElement('h1');
     mainTitle.innerText = 'TODO List';
+    const addBtn = document.createElement('button');
+    addBtn.classList.add('add-btn');
+    addBtn.innerText = 'New';
 
     const wrapper = document.createElement('div');
     wrapper.classList.add('wrapper');
@@ -49,10 +53,13 @@ function builder () {
     wrapper.append(noteContainer);
     controls.append(mainTitle);
     controls.append(btnContainer);
+    btnContainer.append(addBtn);
 
     notesBuilder();
 
     descBuilder();
+
+    newAdder();
 }
 
 function notesBuilder () {
@@ -103,6 +110,7 @@ function noteDescript () {
         document.querySelector('.note-container').innerHTML = '';
         descBuilder();
         console.log(event.target.id);
+        isNew = 0;
     }))
 
 }
@@ -111,6 +119,7 @@ function noteSaver () {
     const saveBtn = document.querySelector('.save-btn');
     const nameText = document.querySelector('.title-text');
     const text = document.querySelector('.text');
+    if (isNew === 0) {
     saveBtn.addEventListener('click', () => {
         dataArr[position]['name'] = `${nameText.value}`;
         document.querySelector('.list-container').innerHTML = '';
@@ -118,6 +127,42 @@ function noteSaver () {
         dataArr[position]['info'] = `${text.value}`;
         document.querySelector('.note-container').innerHTML = '';
         descBuilder();
+    })} 
+    if (isNew === 1) {
+        saveBtn.addEventListener('click', () => {
+        dataArr.push({
+            name: `${nameText.value}`,
+            info: `${text.value}`,
+            status: '1',
+        },);
+        isNew = 0;
+        document.querySelector('.list-container').innerHTML = '';
+        document.querySelector('.note-container').innerHTML = '';
+        notesBuilder();
+        descBuilder();
+    })}
+}
+
+function newAdder () {
+    const btn = document.querySelector('.add-btn');
+    btn.addEventListener('click', () => {
+        document.querySelector('.note-container').innerHTML = '';
+        isNew = 1;
+        
+        const descArea = document.querySelector('.note-container');
+        const textArea = document.createElement('textarea');
+        textArea.classList.add('text');
+        const titleArea = document.createElement('textarea');
+        titleArea.classList.add('title-text');
+        const saveBtn = document.createElement('button');
+        saveBtn.classList.add('save-btn');
+        saveBtn.innerText = 'Save';
+        titleArea.value = '';
+        textArea.value = '';
+        descArea.append(titleArea);
+        descArea.append(textArea);
+        descArea.append(saveBtn);
+        noteSaver();
     })
 }
 
