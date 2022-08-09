@@ -27,14 +27,14 @@ body {
 }
 
 .list-container {
-    width: 300px;
+    /* width: 300px; */
     border-right: 3px solid black;
 }
 
 .note {
     height: 60px;
     border-bottom: 2px solid blue;
-    
+    width: 300px;
 }
 
 h2 {
@@ -53,6 +53,9 @@ h2 {
 
 .note-title {
     cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .title-text {
