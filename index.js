@@ -1,5 +1,7 @@
 const BODY = document.querySelector("body");
 
+
+//// массив с данными заметок
 let dataArr = [
   {
     name: "купить хлеб",
@@ -24,6 +26,7 @@ let statusArr = ["waiting", "in process", "ready"];
 let statusInfo;
 let startNote = 0;
 
+////функция для разметки основных блоков
 function builder() {
   const container = document.createElement("div");
   container.classList.add("container");
@@ -78,9 +81,10 @@ function builder() {
   finder();
 }
 
+////функция для построения списка заметок, данные берутся из массива
 function notesBuilder() {
   const listContainer = document.querySelector(".list-container");
-
+////разделение на цвета по статусу
   dataArr.forEach(function (i) {
     const note = document.createElement("div");
     note.classList.add("note");
@@ -104,6 +108,8 @@ function notesBuilder() {
   noteDescript();
 }
 
+
+////функция строит поле редактирования заметки
 function descBuilder() {
   const descArea = document.querySelector(".note-container");
   const textArea = document.createElement("textarea");
@@ -139,13 +145,15 @@ function descBuilder() {
   statusChanger();
 }
 
+
+////функция для подсвечивания выделенной заметки
 function noteDescript() {
   const notes = document.querySelectorAll(".note-title");
   notes[startNote].style.border = "3px solid red";
   notes.forEach((i) =>
     i.addEventListener("click", (event) => {
       position = event.target.id;
-      document.querySelector(".note-container").innerHTML = "";
+      document.querySelector(".note-container").innerHTML = "";//перерисовка поля изменения в зависимости от выделенной заметки
       descBuilder();
       console.log(event.target.id);
       notes.forEach((e) => (e.style.border = "none"));
@@ -155,6 +163,8 @@ function noteDescript() {
   );
 }
 
+
+////сохранение изменений в заметке
 function noteSaver() {
   const saveBtn = document.querySelector(".save-btn");
   const nameText = document.querySelector(".title-text");
@@ -171,7 +181,7 @@ function noteSaver() {
       descBuilder();
     });
   }
-  if (isNew === 1) {
+  if (isNew === 1) {  //если это новая заметка кноака save добавляет данные в массив с заметками
     statusInfo = 1;
     saveBtn.addEventListener("click", () => {
       dataArr.push({
@@ -190,6 +200,8 @@ function noteSaver() {
   }
 }
 
+
+////при нажатии на кнопку new убираем выделение заметок и очищаем поле изменений
 function newAdder() {
   const btn = document.querySelector(".add-btn");
   btn.addEventListener("click", () => {
@@ -226,6 +238,8 @@ function newAdder() {
   });
 }
 
+
+////смена статуса заметки
 function statusChanger() {
   const statuses = document.querySelectorAll(".status-item");
   statuses.forEach((i) => {
@@ -240,9 +254,12 @@ function statusChanger() {
   });
 }
 
+
+
+////удаление заметки при нажатии кнопки delete
 function remover() {
   const btn = document.querySelector(".del-btn");
-  btn.addEventListener("click", (even) => {
+  btn.addEventListener("click", (even) => { //если заметок не осталось оставляем одну пустую
     if (dataArr.length <= 1) {
       newAdder();
       dataArr[0] = {
@@ -254,7 +271,7 @@ function remover() {
       document.querySelector(".note-container").innerHTML = "";
       notesBuilder();
       descBuilder();
-    } else {
+    } else {         //удаляем заметку из массива ту которая выделена и перерисовываем поля
       dataArr.splice(position, 1);
       position = 0;
       startNote = position;
@@ -266,10 +283,12 @@ function remover() {
   });
 }
 
+
+////поиск заметок, текст из инпут сравнивается с именами заметок в массиве
 function finder () {
     const btn = document.querySelector('.find-btn');
     const input = document.querySelector('.finder');
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', () => { //поиск по кнопке лупа
         const notes = document.querySelectorAll('.note-title');
         notes.forEach((i) => {i.style.border = 'none';});
         if (input.value.length == 0) {console.log('null')}
@@ -283,7 +302,7 @@ function finder () {
         
     })
 
-    input.addEventListener('keydown', (ev) => {
+    input.addEventListener('keydown', (ev) => {   //поиск после нажатия enter
         const notes = document.querySelectorAll('.note-title');
         notes.forEach((i) => {i.style.border = 'none';});
         if (ev.keyCode === 13) {
