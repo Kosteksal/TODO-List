@@ -270,16 +270,32 @@ function finder () {
     const btn = document.querySelector('.find-btn');
     const input = document.querySelector('.finder');
     btn.addEventListener('click', () => {
+        const notes = document.querySelectorAll('.note-title');
+        notes.forEach((i) => {i.style.border = 'none';});
         if (input.value.length == 0) {console.log('null')}
         else {
             dataArr.forEach((i) => {
                 if (i['name'].includes(input.value)) {
-                   const notes = document.querySelectorAll('.note-title');
                    notes[dataArr.indexOf(i)].style.border = '4px solid yellow';
                 }
             })
         }
         
+    })
+
+    input.addEventListener('keydown', (ev) => {
+        const notes = document.querySelectorAll('.note-title');
+        notes.forEach((i) => {i.style.border = 'none';});
+        if (ev.keyCode === 13) {
+            if (input.value.length == 0) {}
+        else {
+            dataArr.forEach((i) => {
+                if (i['name'].includes(input.value)) {
+                   notes[dataArr.indexOf(i)].style.border = '4px solid yellow';
+                }
+            })
+        }
+        }
     })
 }
 
