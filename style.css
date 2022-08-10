@@ -11,10 +11,13 @@ body {
 }
 
 .controls  {
-    height: 50px;
+    height: 100px;
     width: 300px;
     margin: 0 auto;
     margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .wrapper {
@@ -85,4 +88,13 @@ h2 {
 
 .status2 {
     background-color: lightgreen;
+}
+
+.btn-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.find-btn {
+  cursor: pointer;
 }
