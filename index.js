@@ -1,6 +1,5 @@
 const BODY = document.querySelector("body");
 
-
 //// массив с данными заметок
 let dataArr = [
   {
@@ -43,13 +42,13 @@ function builder() {
   const delBtn = document.createElement("button");
   delBtn.classList.add("del-btn");
   delBtn.innerText = "DELETE";
-  const findArea = document.createElement('input');
-  findArea.classList.add('finder');
-  findArea.type = 'text';
-  findArea.placeholder = 'Find note';
-  const findBtn = document.createElement('div');
-  findBtn.classList.add('find-btn');
-  findBtn.innerHTML = '&#128270;';
+  const findArea = document.createElement("input");
+  findArea.classList.add("finder");
+  findArea.type = "text";
+  findArea.placeholder = "Find note";
+  const findBtn = document.createElement("div");
+  findBtn.classList.add("find-btn");
+  findBtn.innerHTML = "&#128270;";
 
   const wrapper = document.createElement("div");
   wrapper.classList.add("wrapper");
@@ -57,13 +56,25 @@ function builder() {
   listContainer.classList.add("list-container");
   const noteContainer = document.createElement("div");
   noteContainer.classList.add("note-container");
-  listContainer.style.width = '300px';
-  const stripe = document.createElement('div');
-  stripe.classList.add('stripe');
+  listContainer.style.width = "300px";
+  const stripe = document.createElement("div");
+  stripe.classList.add("stripe");
+  const footer = document.createElement('footer');
+  const gitLink = document.createElement('a');
+  gitLink.classList.add('git-link');
+  gitLink.href = 'https://github.com/Kosteksal';
+  gitLink.innerHTML = 'GitHub';
+  gitLink.target = 'blank';
+  const footText = document.createElement('span');
+  footText.classList.add('footer-text');
+  footText.innerHTML = '2022';
+  const main = document.createElement('div');
+  main.classList.add('main');
 
   BODY.append(container);
-  container.append(controls);
-  container.append(wrapper);
+  container.append(main);
+  main.append(controls);
+  main.append(wrapper);
   wrapper.append(listContainer);
   wrapper.append(stripe);
   wrapper.append(noteContainer);
@@ -73,6 +84,9 @@ function builder() {
   btnContainer.append(addBtn);
   btnContainer.append(findArea);
   btnContainer.append(findBtn);
+  container.append(footer);
+  footer.append(gitLink);
+  footer.append(footText);
 
   notesBuilder();
 
@@ -90,7 +104,7 @@ function builder() {
 ////функция для построения списка заметок, данные берутся из массива
 function notesBuilder() {
   const listContainer = document.querySelector(".list-container");
-////разделение на цвета по статусу
+  ////разделение на цвета по статусу
   dataArr.forEach(function (i) {
     const note = document.createElement("div");
     note.classList.add("note");
@@ -113,7 +127,6 @@ function notesBuilder() {
 
   noteDescript();
 }
-
 
 ////функция строит поле редактирования заметки
 function descBuilder() {
@@ -151,7 +164,6 @@ function descBuilder() {
   statusChanger();
 }
 
-
 ////функция для подсвечивания выделенной заметки
 function noteDescript() {
   const notes = document.querySelectorAll(".note-title");
@@ -159,7 +171,7 @@ function noteDescript() {
   notes.forEach((i) =>
     i.addEventListener("click", (event) => {
       position = event.target.id;
-      document.querySelector(".note-container").innerHTML = "";//перерисовка поля изменения в зависимости от выделенной заметки
+      document.querySelector(".note-container").innerHTML = ""; //перерисовка поля изменения в зависимости от выделенной заметки
       descBuilder();
       console.log(event.target.id);
       notes.forEach((e) => (e.style.border = "none"));
@@ -168,7 +180,6 @@ function noteDescript() {
     })
   );
 }
-
 
 ////сохранение изменений в заметке
 function noteSaver() {
@@ -187,7 +198,8 @@ function noteSaver() {
       descBuilder();
     });
   }
-  if (isNew === 1) {  //если это новая заметка кноака save добавляет данные в массив с заметками
+  if (isNew === 1) {
+    //если это новая заметка кноака save добавляет данные в массив с заметками
     statusInfo = 1;
     saveBtn.addEventListener("click", () => {
       dataArr.push({
@@ -205,7 +217,6 @@ function noteSaver() {
     });
   }
 }
-
 
 ////при нажатии на кнопку new убираем выделение заметок и очищаем поле изменений
 function newAdder() {
@@ -244,7 +255,6 @@ function newAdder() {
   });
 }
 
-
 ////смена статуса заметки
 function statusChanger() {
   const statuses = document.querySelectorAll(".status-item");
@@ -260,12 +270,11 @@ function statusChanger() {
   });
 }
 
-
-
 ////удаление заметки при нажатии кнопки delete
 function remover() {
   const btn = document.querySelector(".del-btn");
-  btn.addEventListener("click", (even) => { //если заметок не осталось оставляем одну пустую
+  btn.addEventListener("click", (even) => {
+    //если заметок не осталось оставляем одну пустую
     if (dataArr.length <= 1) {
       newAdder();
       dataArr[0] = {
@@ -277,7 +286,8 @@ function remover() {
       document.querySelector(".note-container").innerHTML = "";
       notesBuilder();
       descBuilder();
-    } else {         //удаляем заметку из массива ту которая выделена и перерисовываем поля
+    } else {
+      //удаляем заметку из массива ту которая выделена и перерисовываем поля
       dataArr.splice(position, 1);
       position = 0;
       startNote = position;
@@ -289,66 +299,68 @@ function remover() {
   });
 }
 
-
 ////поиск заметок, текст из инпут сравнивается с именами заметок в массиве
-function finder () {
-    const btn = document.querySelector('.find-btn');
-    const input = document.querySelector('.finder');
-    btn.addEventListener('click', () => { //поиск по кнопке лупа
-        const notes = document.querySelectorAll('.note-title');
-        notes.forEach((i) => {i.style.border = 'none';});
-        if (input.value.length == 0) {console.log('null')}
-        else {
-            dataArr.forEach((i) => {
-                if (i['name'].includes(input.value)) {
-                   notes[dataArr.indexOf(i)].style.border = '4px solid yellow';
-                }
-            })
+function finder() {
+  const btn = document.querySelector(".find-btn");
+  const input = document.querySelector(".finder");
+  btn.addEventListener("click", () => {
+    //поиск по кнопке лупа
+    const notes = document.querySelectorAll(".note-title");
+    notes.forEach((i) => {
+      i.style.border = "none";
+    });
+    if (input.value.length == 0) {
+      console.log("null");
+    } else {
+      dataArr.forEach((i) => {
+        if (i["name"].includes(input.value)) {
+          notes[dataArr.indexOf(i)].style.border = "4px solid yellow";
         }
-        
-    })
+      });
+    }
+  });
 
-    input.addEventListener('keydown', (ev) => {   //поиск после нажатия enter
-        const notes = document.querySelectorAll('.note-title');
-        notes.forEach((i) => {i.style.border = 'none';});
-        if (ev.keyCode === 13) {
-            if (input.value.length == 0) {}
-        else {
-            dataArr.forEach((i) => {
-                if (i['name'].includes(input.value)) {
-                   notes[dataArr.indexOf(i)].style.border = '4px solid yellow';
-                }
-            })
-        }
-        }
-    })
+  input.addEventListener("keydown", (ev) => {
+    //поиск после нажатия enter
+    const notes = document.querySelectorAll(".note-title");
+    notes.forEach((i) => {
+      i.style.border = "none";
+    });
+    if (ev.keyCode === 13) {
+      if (input.value.length == 0) {
+      } else {
+        dataArr.forEach((i) => {
+          if (i["name"].includes(input.value)) {
+            notes[dataArr.indexOf(i)].style.border = "4px solid yellow";
+          }
+        });
+      }
+    }
+  });
 }
 
-
-function resizer () {
-    const stripe = document.querySelector('.stripe');
-    const block = document.querySelector('.list-container');
-    const wrapper = document.querySelector('.wrapper');
-    let startPos;
-    let blockPos;
-    function mouseMover (event1) {
-       // console.log(event1.clientX);
-        console.log(block.offsetWidth);
-        block.style.width = `${blockPos + (event1.clientX - startPos)}px`
-
-    }
-    stripe.addEventListener('mousedown', (eve) => {
-        //console.log(eve.clientX);
-        wrapper.addEventListener('mousemove', mouseMover);
-        startPos = eve.clientX;
-        blockPos = block.offsetWidth;
-    });
-    wrapper.addEventListener('mouseup', (even) => {
-        console.log('up')
-        wrapper.removeEventListener('mousemove', mouseMover);
-    })
-
-    
+////изменение размера списка заметок мышкой
+function resizer() {
+  const stripe = document.querySelector(".stripe");
+  const block = document.querySelector(".list-container");
+  const wrapper = document.querySelector(".wrapper");
+  let startPos;
+  let blockPos;
+  function mouseMover(event1) {
+    // console.log(event1.clientX);
+    console.log(block.offsetWidth);
+    block.style.width = `${blockPos + (event1.clientX - startPos)}px`;
+  }
+  stripe.addEventListener("mousedown", (eve) => {
+    //console.log(eve.clientX);
+    wrapper.addEventListener("mousemove", mouseMover);
+    startPos = eve.clientX;
+    blockPos = block.offsetWidth;
+  });
+  wrapper.addEventListener("mouseup", (even) => {
+    console.log("up");
+    wrapper.removeEventListener("mousemove", mouseMover);
+  });
 }
 
 document.addEventListener("DOMContentLoaded", builder);
