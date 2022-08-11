@@ -3,25 +3,25 @@ const BODY = document.querySelector("body");
 //// массив с данными заметок
 let dataArr = [
   {
-    name: "купить хлеб",
-    info: "в определенном магазине",
+    name: "Купить хлеб",
+    info: "В определенном магазине, обязательно столичный",
     status: "2",
   },
   {
-    name: "решить задачу",
-    info: "очень сложная",
+    name: "Решить задачу",
+    info: "Очень сложная, программирование это увлекательно!",
     status: "1",
   },
   {
-    name: "забрать посылку",
-    info: "возможна очередь",
+    name: "Забрать посылку",
+    info: "Возможна очередь!",
     status: "3",
   },
 ];
 
 let position = 0;
 let isNew = 0;
-let statusArr = ["waiting", "in process", "ready"];
+let statusArr = ["ожидает", "в процессе", "выполнена"];
 let statusInfo;
 let startNote = 0;
 
@@ -38,14 +38,14 @@ function builder() {
   mainTitle.innerText = "TODO List";
   const addBtn = document.createElement("button");
   addBtn.classList.add("add-btn");
-  addBtn.innerText = "New";
+  addBtn.innerText = "Новая";
   const delBtn = document.createElement("button");
   delBtn.classList.add("del-btn");
-  delBtn.innerText = "DELETE";
+  delBtn.innerText = "УДАЛИТЬ";
   const findArea = document.createElement("input");
   findArea.classList.add("finder");
   findArea.type = "text";
-  findArea.placeholder = "Find note";
+  findArea.placeholder = "Поиск";
   const findBtn = document.createElement("div");
   findBtn.classList.add("find-btn");
   findBtn.innerHTML = "&#128270;";
@@ -64,7 +64,7 @@ function builder() {
   gitLink.classList.add('git-link');
   gitLink.href = 'https://github.com/Kosteksal';
   gitLink.innerHTML = 'GitHub';
-  gitLink.target = 'blank';
+  gitLink.target = 'blank'; 
   const footText = document.createElement('span');
   footText.classList.add('footer-text');
   footText.innerHTML = '2022';
@@ -133,11 +133,13 @@ function descBuilder() {
   const descArea = document.querySelector(".note-container");
   const textArea = document.createElement("textarea");
   textArea.classList.add("text");
+  textArea.placeholder = 'Описание';
   const titleArea = document.createElement("textarea");
   titleArea.classList.add("title-text");
+  titleArea.placeholder = 'Название';
   const saveBtn = document.createElement("button");
   saveBtn.classList.add("save-btn");
-  saveBtn.innerText = "Save";
+  saveBtn.innerText = "Cохранить";
   const statusContainer = document.createElement("div");
   statusContainer.classList.add("status-container");
   titleArea.value = dataArr[position]["name"];
@@ -168,6 +170,7 @@ function descBuilder() {
 function noteDescript() {
   const notes = document.querySelectorAll(".note-title");
   notes[startNote].style.border = "3px solid red";
+  notes[startNote].style.borderRadius = "20px";
   notes.forEach((i) =>
     i.addEventListener("click", (event) => {
       position = event.target.id;
@@ -176,6 +179,7 @@ function noteDescript() {
       console.log(event.target.id);
       notes.forEach((e) => (e.style.border = "none"));
       event.target.style.border = "3px solid red";
+      event.target.style.borderRadius = "20px";
       isNew = 0;
     })
   );
@@ -228,14 +232,16 @@ function newAdder() {
     notes.forEach((e) => (e.style.border = "none"));
     const descArea = document.querySelector(".note-container");
     const textArea = document.createElement("textarea");
+    textArea.placeholder = 'Описание';
     const statusContainer = document.createElement("div");
     statusContainer.classList.add("status-container");
     textArea.classList.add("text");
     const titleArea = document.createElement("textarea");
     titleArea.classList.add("title-text");
+    titleArea.placeholder = 'Название';
     const saveBtn = document.createElement("button");
     saveBtn.classList.add("save-btn");
-    saveBtn.innerText = "Save";
+    saveBtn.innerText = "Сохранить";
     titleArea.value = "";
     textArea.value = "";
     descArea.append(titleArea);
@@ -263,7 +269,7 @@ function statusChanger() {
       statusInfo = Number(event.target.className[6]) + 1;
       console.log(statusInfo);
       statuses.forEach((i) => (i.style.border = "none"));
-      event.target.style.border = "2px solid black";
+      event.target.style.border = "2px solid red";
       // descArea.append(saveBtn);
       //noteSaver();
     });
@@ -314,7 +320,8 @@ function finder() {
     } else {
       dataArr.forEach((i) => {
         if (i["name"].includes(input.value)) {
-          notes[dataArr.indexOf(i)].style.border = "4px solid yellow";
+          notes[dataArr.indexOf(i)].style.border = "5px solid yellow";
+          notes[dataArr.indexOf(i)].style.borderRadius = "20px";
         }
       });
     }
@@ -331,7 +338,8 @@ function finder() {
       } else {
         dataArr.forEach((i) => {
           if (i["name"].includes(input.value)) {
-            notes[dataArr.indexOf(i)].style.border = "4px solid yellow";
+            notes[dataArr.indexOf(i)].style.border = "5px solid yellow";
+            notes[dataArr.indexOf(i)].style.borderRadius = "20px";
           }
         });
       }
@@ -348,7 +356,7 @@ function resizer() {
   let blockPos;
   function mouseMover(event1) {
     // console.log(event1.clientX);
-    console.log(block.offsetWidth);
+    // console.log(block.offsetWidth);
     block.style.width = `${blockPos + (event1.clientX - startPos)}px`;
   }
   stripe.addEventListener("mousedown", (eve) => {
@@ -358,7 +366,7 @@ function resizer() {
     blockPos = block.offsetWidth;
   });
   wrapper.addEventListener("mouseup", (even) => {
-    console.log("up");
+    // console.log("up");
     wrapper.removeEventListener("mousemove", mouseMover);
   });
 }
