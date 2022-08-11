@@ -57,11 +57,15 @@ function builder() {
   listContainer.classList.add("list-container");
   const noteContainer = document.createElement("div");
   noteContainer.classList.add("note-container");
+  listContainer.style.width = '300px';
+  const stripe = document.createElement('div');
+  stripe.classList.add('stripe');
 
   BODY.append(container);
   container.append(controls);
   container.append(wrapper);
   wrapper.append(listContainer);
+  wrapper.append(stripe);
   wrapper.append(noteContainer);
   controls.append(mainTitle);
   controls.append(btnContainer);
@@ -79,6 +83,8 @@ function builder() {
   remover();
 
   finder();
+
+  resizer();
 }
 
 ////функция для построения списка заметок, данные берутся из массива
@@ -316,6 +322,33 @@ function finder () {
         }
         }
     })
+}
+
+
+function resizer () {
+    const stripe = document.querySelector('.stripe');
+    const block = document.querySelector('.list-container');
+    const wrapper = document.querySelector('.wrapper');
+    let startPos;
+    let blockPos;
+    function mouseMover (event1) {
+       // console.log(event1.clientX);
+        console.log(block.offsetWidth);
+        block.style.width = `${blockPos + (event1.clientX - startPos)}px`
+
+    }
+    stripe.addEventListener('mousedown', (eve) => {
+        //console.log(eve.clientX);
+        wrapper.addEventListener('mousemove', mouseMover);
+        startPos = eve.clientX;
+        blockPos = block.offsetWidth;
+    });
+    wrapper.addEventListener('mouseup', (even) => {
+        console.log('up')
+        wrapper.removeEventListener('mousemove', mouseMover);
+    })
+
+    
 }
 
 document.addEventListener("DOMContentLoaded", builder);

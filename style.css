@@ -22,22 +22,37 @@ body {
 
 .wrapper {
     width: 1000px;
-    height: 800px;
+    height: 650px;
     display: flex;
     flex-direction: row;
+    /* justify-content: space-between;
+    flex-shrink: 0; */
+    align-content: stretch;
     border: 3px solid black;
     margin: 0 auto;
+}
+
+.stripe {
+    width: 10px;
+    cursor: e-resize;
 }
 
 .list-container {
     /* width: 300px; */
     border-right: 3px solid black;
+    overflow-y: auto;
+    /* resize: horizontal; */
 }
+
+/* .list-container::-webkit-resizer {
+    height: 200px;
+    width: 10px;
+} */
 
 .note {
     height: 60px;
     border-bottom: 2px solid blue;
-    width: 300px;
+    /* width: 300px; */
 }
 
 h2 {
@@ -50,8 +65,9 @@ h2 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
+    /* width: 100%; */
     gap: 15px;
+    margin: 0 auto;
 }
 
 .note-title {
