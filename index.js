@@ -1,7 +1,6 @@
 const BODY = document.querySelector("body");
 
-//// массив с данными заметок
-//let dataArr;
+//// массив объектов с данными заметок
 let dataArr = [
   {
     name: "Купить хлеб",
@@ -20,6 +19,8 @@ let dataArr = [
   },
 ];
 
+
+////служебные переменные
 let position = 0;
 let isNew = 0;
 let statusArr = ["ожидает", "в процессе", "выполнена"];
@@ -28,7 +29,7 @@ let startNote = 0;
 
 ////функция для разметки основных блоков
 function builder() {
-  const container = document.createElement("div");
+  const container = document.createElement("div"); //создаем элементы разметки и добавляем им классы и атрибуты
   container.classList.add("container");
   const controls = document.createElement("div");
   controls.classList.add("controls");
@@ -72,7 +73,7 @@ function builder() {
   const main = document.createElement('div');
   main.classList.add('main');
 
-  BODY.append(container);
+  BODY.append(container); //вкладываем созданные выше элементы друг в друга
   container.append(main);
   main.append(controls);
   main.append(wrapper);
@@ -89,7 +90,7 @@ function builder() {
   footer.append(gitLink);
   footer.append(footText);
 
-  notesBuilder();
+  notesBuilder(); //вызываем другие функции
 
   descBuilder();
 
@@ -104,11 +105,11 @@ function builder() {
 
 ////функция для построения списка заметок, данные берутся из массива
 function notesBuilder() {
-  const listContainer = document.querySelector(".list-container");
+  const listContainer = document.querySelector(".list-container"); 
   ////разделение на цвета по статусу
   dataArr.forEach(function (i) {
     const note = document.createElement("div");
-    note.classList.add("note");
+    note.classList.add("note");               //при генерации списка заметок проверяем статус заметки в главном массиве и окрашиваем замекув соответствующий цвет
     if (i["status"] == "1") {
       note.style.backgroundColor = "grey";
     }
@@ -118,7 +119,7 @@ function notesBuilder() {
     if (i["status"] == "3") {
       note.style.backgroundColor = "lightgreen";
     }
-    const noteTitle = document.createElement("h2");
+    const noteTitle = document.createElement("h2"); //генерируем название заметки
     noteTitle.classList.add("note-title");
     noteTitle.id = dataArr.indexOf(i);
     noteTitle.innerText = i["name"];
@@ -131,7 +132,7 @@ function notesBuilder() {
 
 ////функция строит поле редактирования заметки
 function descBuilder() {
-  const descArea = document.querySelector(".note-container");
+  const descArea = document.querySelector(".note-container"); //создаем основные объекты поля редактирования
   const textArea = document.createElement("textarea");
   textArea.classList.add("text");
   textArea.placeholder = 'Описание';
@@ -148,16 +149,13 @@ function descBuilder() {
   descArea.append(titleArea);
   descArea.append(textArea);
   descArea.append(statusContainer);
-  statusArr.forEach((i) => {
+  statusArr.forEach((i) => {                         //генерируем кнопки выбора статуса
     const statusItem = document.createElement("div");
     statusItem.classList.add(`status${statusArr.indexOf(i)}`);
     statusItem.classList.add("status-item");
     statusItem.innerText = i;
     statusContainer.append(statusItem);
   });
-
-  // const status = document.querySelector(`.status${dataArr[position]['status'] - 1}`);
-  // status.style.border = '2px solid black';
 
   descArea.append(saveBtn);
   statusInfo = dataArr[position]["status"];
@@ -169,7 +167,7 @@ function descBuilder() {
 
 ////функция для подсвечивания выделенной заметки
 function noteDescript() {
-  const notes = document.querySelectorAll(".note-title");
+  const notes = document.querySelectorAll(".note-title");   //генерируем рамку на тот же элемент коллекции что и выбран
   notes[startNote].style.border = "3px solid red";
   notes[startNote].style.borderRadius = "20px";
   notes.forEach((i) =>
@@ -181,7 +179,7 @@ function noteDescript() {
       notes.forEach((e) => (e.style.border = "none"));
       event.target.style.border = "3px solid red";
       event.target.style.borderRadius = "20px";
-      isNew = 0;
+      isNew = 0;  //переменная показывает что будет сохраняться изменение существующей заметки
     })
   );
 }
@@ -190,8 +188,8 @@ function noteDescript() {
 function noteSaver() {
   const saveBtn = document.querySelector(".save-btn");
   const nameText = document.querySelector(".title-text");
-  const text = document.querySelector(".text");
-  if (isNew === 0) {
+  const text = document.querySelector(".text");   
+  if (isNew === 0) {                               //isNew == 0 при нажатии на save меняем данные в главном массиве и перерисовываем поле
     saveBtn.addEventListener("click", () => {
       dataArr[position]["status"] = statusInfo;
       dataArr[position]["name"] = `${nameText.value}`;
@@ -226,7 +224,7 @@ function noteSaver() {
 ////при нажатии на кнопку new убираем выделение заметок и очищаем поле изменений
 function newAdder() {
   const btn = document.querySelector(".add-btn");
-  btn.addEventListener("click", () => {
+  btn.addEventListener("click", () => {                      //при клике на кнопку очищаем поле изменений и создаем константы блоков и перерисовываем поле
     document.querySelector(".note-container").innerHTML = "";
     isNew = 1;
     const notes = document.querySelectorAll(".note-title");
@@ -265,14 +263,12 @@ function newAdder() {
 ////смена статуса заметки
 function statusChanger() {
   const statuses = document.querySelectorAll(".status-item");
-  statuses.forEach((i) => {
+  statuses.forEach((i) => {                                     //при нажатии на статус ставим рамку на выбранный
     i.addEventListener("click", (event) => {
       statusInfo = Number(event.target.className[6]) + 1;
       console.log(statusInfo);
       statuses.forEach((i) => (i.style.border = "none"));
       event.target.style.border = "2px solid red";
-      // descArea.append(saveBtn);
-      //noteSaver();
     });
   });
 }
@@ -313,13 +309,13 @@ function finder() {
   btn.addEventListener("click", () => {
     //поиск по кнопке лупа
     const notes = document.querySelectorAll(".note-title");
-    notes.forEach((i) => {
+    notes.forEach((i) => {       //убираем рамки с заголовков
       i.style.border = "none";
     });
-    if (input.value.length == 0) {
+    if (input.value.length == 0) { //если запрос пустой то ничего не ищем
       console.log("null");
     } else {
-      dataArr.forEach((i) => {
+      dataArr.forEach((i) => {  //иначе ищем содержимое инпута в главном массиве среди имен
         if (i["name"].includes(input.value)) {
           notes[dataArr.indexOf(i)].style.border = "5px solid yellow";
           notes[dataArr.indexOf(i)].style.borderRadius = "20px";
@@ -356,34 +352,30 @@ function resizer() {
   let startPos;
   let blockPos;
   function mouseMover(event1) {
-    // console.log(event1.clientX);
-    // console.log(block.offsetWidth);
-    block.style.width = `${blockPos + (event1.clientX - startPos)}px`;
+    block.style.width = `${blockPos + (event1.clientX - startPos)}px`; //изменяемая ширина блока 
   }
   stripe.addEventListener("mousedown", (eve) => {
-    //console.log(eve.clientX);
-    wrapper.addEventListener("mousemove", mouseMover);
-    startPos = eve.clientX;
+    wrapper.addEventListener("mousemove", mouseMover); //при перемещении мыши переписываем размер блока
+    startPos = eve.clientX;         //при нажатии на кнопку мыши в нужном месте считываем ширину меняемого блока и положение курсора
     blockPos = block.offsetWidth;
   });
-  wrapper.addEventListener("mouseup", (even) => {
-    // console.log("up");
+  wrapper.addEventListener("mouseup", (even) => { //при отпускании кнопки мыши убираем листенер на перемещение мыши
     wrapper.removeEventListener("mousemove", mouseMover);
   });
 }
 
 ////сохранение листа в local storage
 
-window.addEventListener("beforeunload", () => {
+window.addEventListener("beforeunload", () => {   //до выключения страницы записываем главный массив в local storage после перевода массива в строку
   localStorage.setItem("list", JSON.stringify(dataArr));
 });
 
-window.addEventListener("load", () => {
+window.addEventListener("load", () => {  //при загрузке страницы берем данные из local storage, преобразуем в массив
   let storage = localStorage.getItem("list");
   let storageParse = JSON.parse(storage);
-  if (storage == null) {
+  if (storage == null) { //если это первый запуск и local storage пуст, ничего не делаем
     console.log("no data in storage");
-  } else {
+  } else {           //иначе меняем главный массив и перерисовываем поля заметок
     dataArr = storageParse;
     document.querySelector(".list-container").innerHTML = "";
     document.querySelector(".note-container").innerHTML = "";
