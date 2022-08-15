@@ -5,7 +5,6 @@
 * {
     box-sizing: border-box;
     font-family: 'Raleway', sans-serif;
-    transition: 0.4s;
 }
 
 html {
@@ -57,11 +56,13 @@ body {
 .stripe {
     width: 10px;
     cursor: e-resize;
+    
 }
 
 .list-container {
     border-right: 3px solid black;
     overflow-y: auto;
+    
 }
 
 .note {
@@ -89,6 +90,7 @@ h2 {
     align-items: center;
     gap: 15px;
     margin: 0 auto;
+    transition: none;
 }
 
 .note-title {
