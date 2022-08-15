@@ -1,6 +1,7 @@
 const BODY = document.querySelector("body");
 
 //// массив с данными заметок
+//let dataArr;
 let dataArr = [
   {
     name: "Купить хлеб",
@@ -9,7 +10,7 @@ let dataArr = [
   },
   {
     name: "Решить задачу",
-    info: "Очень сложная, программирование это увлекательно!",
+    info: "Очень сложная, но программирование это увлекательно!",
     status: "1",
   },
   {
@@ -370,5 +371,25 @@ function resizer() {
     wrapper.removeEventListener("mousemove", mouseMover);
   });
 }
+
+////сохранение листа в local storage
+
+window.addEventListener("beforeunload", () => {
+  localStorage.setItem("list", JSON.stringify(dataArr));
+});
+
+window.addEventListener("load", () => {
+  let storage = localStorage.getItem("list");
+  let storageParse = JSON.parse(storage);
+  if (storage == null) {
+    console.log("no data in storage");
+  } else {
+    dataArr = storageParse;
+    document.querySelector(".list-container").innerHTML = "";
+    document.querySelector(".note-container").innerHTML = "";
+    notesBuilder();
+    descBuilder();
+  }
+});
 
 document.addEventListener("DOMContentLoaded", builder);
